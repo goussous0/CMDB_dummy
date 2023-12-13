@@ -48,7 +48,7 @@ def threat_map(request: Request):
     for item in lst:
         data[item] = randrange(0, 10000)
 
+    sum_ips = sum(data.values())
     data["top5"] = {key: val for key,val in sorted(data.items(), key=lambda item: item[1])[-5:]}
-    data["sum"] = sum(data.values())
-    
+    data["sum"] = sum_ips
     return data
