@@ -1,5 +1,5 @@
 import base64
-from random import randrange
+from random import randint, choice
 from fastapi import FastAPI, Depends, Request, HTTPException, status
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
@@ -46,7 +46,10 @@ def threat_map(request: Request):
 
     data = {}
     for item in lst:
-        data[item] = randrange(0, 10000)
+        if randint(1, 10) == 1:
+            data[item] = randint(100000, 1000000)
+        else:
+            data[item] = randint(0, 100)
 
     sum_ips = sum(data.values())
     data["top5"] = {key: val for key,val in sorted(data.items(), key=lambda item: item[1])[-5:]}
