@@ -44,14 +44,17 @@ def threat_map(request: Request):
     "RU","TF","DK","SV","SN","CZ","SI","KR","JP","BS","VE","TL","UZ","AU","CL","QA","BM","MZ","EE","AT","GE","TD","LI","CI","VN","KW","AR","NI","MG","BR","RW","TJ","NA","PL","LR","VU","BZ","YT","LA","MC","MT","BY","GI","EG","LK","SA","DE","TT","SK","SS","LT","JM","MU","SR","CY","PF","BB","SZ","AG","HU","FI","ST","RS","EC","TM","AO","KG","MR","TG","IE","JE","RE","DJ","BQ","BD","SX","UA","DO","ES","NO","BA","TH","TN","BH","PS","TR","CU","MA","AL","SY","CO","BE","DZ","PM","GF","AX","AZ","GL","GT","MM","PE","PY","CK","SG","US","KE","LY","YE","UG","NZ","KZ","SL","UY","HN","GU","AE","IQ","IR","DM","NL","IN","CN","GQ","NE","BN","ME","GM","LS","ZM","ET","CD","SD","TC","MY","XK","HK","KM","MV","NP","MQ","VG","BW","MP","SE","GH","KN","BF","CH","BT","SC","AW","VI","PW","PK","TW","BO","LU","CA","ML",
     "PR","FR","KY","FJ","LV","PG","MX","GG","RO","CW","TZ","BI","SO","MO","PH","ZW","ER","NC","LC","CG","FO","GA","IM","ID","GY","OM","MN","WS","AM","KI","AF","PA","LB","HT","MD","AD","ZA","GN","PT","TO","NG","IL","JO","BG","IT","GB","IS","GP","CR","HR","MK","KH","GR","GD","MW","BJ","CM","CV"]
 
-    data = {}
+    data = {
+        "ips": []
+    }
     for item in lst:
         if randint(1, 10) == 1:
-            data[item] = randint(100000, 1000000)
+            data["ips"].append({"id": item, "value": randint(100000, 1000000)})
         else:
-            data[item] = randint(0, 100)
+            data["ips"].append({"id": item, "value": randint(0, 100)})
 
-    sum_ips = sum(data.values())
-    data["top5"] = {key: val for key,val in sorted(data.items(), key=lambda item: item[1])[-5:]}
-    data["sum"] = sum_ips
-    return data
+    data["top5"] = sorted(data["ips"], key=lambda x: x['value'], reverse=True)[:5]
+        
+    data["sum"] = sum(_["value"] for _ in data["ips"])
+
+    return JSONResponse(data)
